@@ -1,11 +1,11 @@
 const name = 'Mushagalusa Metre Josué';
 const role = 'Développeur full stack IA junior';
 const city = 'Goma, Nord-Kivu, RDC';
-const photo = ''; // Exemple : assets/portraits/josue.jpg
-const phone = '';
-const email = '';
-const github = '';
-const linkedIn = '';
+const photo = 'assets/profile.jpg'; // Exemple : assets/portraits/josue.jpg
+const phone = '+243 985 095 747';
+const email = 'mushagalusajosue5@gmail.com';
+const github = 'josue25';
+const linkedIn = 'josue mushagalusa';
 
 class Relative {
   const Relative(this.name, this.relationship, this.description,
@@ -20,7 +20,7 @@ class Relative {
 const parents = [
   Relative('Metre Bacibone Dug Gustav', 'Père',
       'Professeur ordinaire en mathématiques · Père de neuf enfants'),
-  Relative('Sifa Bashige Yvette', 'Mère', 'Mère au foyer'),
+  Relative('Sifa Bashige Yvette', 'Mère de neuf enfants', 'Mère au foyer'),
 ];
 
 const siblings = [
