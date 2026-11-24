@@ -4,9 +4,11 @@ Application Flutter de présentation du CV, de la famille et des coordonnées. L
 
 ## Démonstration vidéo
 
-[Regarder ou télécharger la démonstration WebM](docs/demonstration.webm)
+[![Aperçu de la démonstration sur la page Famille](docs/screenshots/03-famille.png)](docs/demonstration.mp4)
 
-La vidéo montre la création d’un compte, le refus d’un mot de passe incorrect, la connexion, l’ajout et la consultation d’un membre, sa modification, la lecture des données après rechargement, puis la suppression et la déconnexion. Le workflow **Vérifier Flutter et capturer les écrans** peut régénérer la vidéo et les captures avec une base de démonstration vierge.
+[Ouvrir ou télécharger la démonstration MP4](docs/demonstration.mp4)
+
+Le workflow **Vérifier Flutter et capturer les écrans** peut enregistrer une nouvelle vidéo WebM et régénérer les captures avec une base de démonstration vierge.
 
 ## Installer l’API
 
