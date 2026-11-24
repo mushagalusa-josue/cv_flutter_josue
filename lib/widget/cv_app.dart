@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../api.dart';
 import '../pages/connexion.dart';
 import 'colors.dart';
 import 'portfolio.dart';
 
 class CvApp extends StatefulWidget {
-  const CvApp({super.key});
+  const CvApp({super.key, this.api = const Api()});
+  final Api api;
 
   @override
   State<CvApp> createState() => _CvAppState();
@@ -24,7 +26,11 @@ class _CvAppState extends State<CvApp> {
           useMaterial3: true,
         ),
         home: signedIn
-            ? Portfolio(onLogout: () => setState(() => signedIn = false))
-            : SignIn(onSuccess: () => setState(() => signedIn = true)),
+            ? Portfolio(
+                api: widget.api,
+                onLogout: () => setState(() => signedIn = false))
+            : SignIn(
+                api: widget.api,
+                onSuccess: () => setState(() => signedIn = true)),
       );
 }
