@@ -4,7 +4,7 @@ Application Flutter de présentation du CV, de la famille et des coordonnées. L
 
 ## Démonstration vidéo
 
-[![Aperçu de la démonstration sur la page Famille](docs/screenshots/03-famille.png)](docs/demonstration.mp4)
+[![Aperçu de l’écran de connexion](docs/screenshots/01-connexion.png)](docs/demonstration.mp4)
 
 [Ouvrir ou télécharger la démonstration MP4](docs/demonstration.mp4)
 
@@ -44,6 +44,6 @@ flutter test
 | --- | --- |
 | ![Écran de connexion](docs/screenshots/01-connexion.png) | ![Accueil et CV](docs/screenshots/02-accueil.png) |
 
-| Famille | Contact |
-| --- | --- |
-| ![Page Famille](docs/screenshots/03-famille.png) | ![Page Contact](docs/screenshots/04-contact.png) |
+| Contact |
+| --- |
+| ![Page Contact](docs/screenshots/04-contact.png) |

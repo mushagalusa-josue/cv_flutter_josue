@@ -67,7 +67,6 @@ try {
   await button('Enregistrer').click();
   const member = button('Camille Exemple Démo Cousine');
   await member.waitFor();
-  await capture('03-famille');
   await member.click();
   await button('Fermer').waitFor();
   assert.match(await page.locator('body').ariaSnapshot(), /Lieu de naissance · Bukavu/);
