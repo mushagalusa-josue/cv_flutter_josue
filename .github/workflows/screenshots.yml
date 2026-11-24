@@ -1,4 +1,4 @@
-name: Vérifier Flutter et capturer les écrans
+﻿name: Vérifier Flutter et capturer les écrans
 on:
   push:
     branches: [main]
@@ -6,7 +6,7 @@ on:
       - 'lib/**'
       - 'assets/**'
       - 'pubspec.yaml'
-      - 'tool/capture.mjs'
+      - 'tool/**'
       - '.github/workflows/screenshots.yml'
   workflow_dispatch:
 permissions:
@@ -28,11 +28,23 @@ jobs:
       - run: flutter create --platforms=android,ios,web .
       - run: flutter analyze
       - run: flutter test
-      - run: flutter build web
+      - run: flutter build web --no-web-resources-cdn --dart-define=API_BASE_URL=http://127.0.0.1:8080/api-test/public
       - run: npm install --no-save playwright && npx playwright install --with-deps chromium
-      - name: Capturer les quatre pages
+      - name: Enregistrer la démonstration et les captures
         run: |
-          python3 -m http.server 8080 --bind 127.0.0.1 --directory build/web &
+          export COURSE_API_DIR="$RUNNER_TEMP/api-test"
+          git clone --depth 1 https://github.com/espoirbaraka/api-test.git "$COURSE_API_DIR"
+          sudo systemctl start mysql
+          mysql -uroot -proot -e 'CREATE DATABASE api CHARACTER SET utf8mb4;'
+          mysql -uroot -proot api < "$COURSE_API_DIR/api.sql"
+          cat > "$COURSE_API_DIR/.env" <<'EOF'
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_DATABASE=api
+          DB_USERNAME=root
+          DB_PASSWORD=root
+          EOF
+          php -S 127.0.0.1:8080 -t build/web tool/demo-router.php &
           server_pid=$!
           trap 'kill "$server_pid"' EXIT
           curl --retry 10 --retry-connrefused --retry-delay 1 --fail -s http://127.0.0.1:8080/ >/dev/null
@@ -40,11 +52,13 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: captures-flutter
-          path: docs/screenshots/*.png
+          path: |
+            docs/screenshots/*.png
+            docs/demonstration.webm
       - name: Ajouter les captures au dépôt
         if: github.ref == 'refs/heads/main'
         run: |
-          git add docs/screenshots/*.png
+          git add docs/screenshots/*.png docs/demonstration.webm
           if git diff --cached --quiet; then exit 0; fi
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

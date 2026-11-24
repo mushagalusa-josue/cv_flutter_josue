@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../api.dart';
 import '../pages/acceuil.dart';
 import '../pages/contact.dart';
 import '../pages/famille.dart';
 
 class Portfolio extends StatefulWidget {
-  const Portfolio({super.key, required this.onLogout});
+  const Portfolio({super.key, required this.api, required this.onLogout});
+  final Api api;
   final VoidCallback onLogout;
 
   @override
@@ -15,7 +17,11 @@ class Portfolio extends StatefulWidget {
 class _PortfolioState extends State<Portfolio> {
   int index = 0;
   static const titles = ['Accueil', 'Famille', 'Contact'];
-  static const pages = [ResumePage(), FamilyPage(), ContactPage()];
+  late final pages = [
+    const ResumePage(),
+    FamilyPage(api: widget.api),
+    const ContactPage()
+  ];
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -35,9 +41,12 @@ class _PortfolioState extends State<Portfolio> {
           selectedIndex: index,
           onDestinationSelected: (value) => setState(() => index = value),
           destinations: const [
-            NavigationDestination(icon: Icon(Icons.badge_outlined), label: 'Accueil'),
-            NavigationDestination(icon: Icon(Icons.groups_outlined), label: 'Famille'),
-            NavigationDestination(icon: Icon(Icons.alternate_email), label: 'Contact'),
+            NavigationDestination(
+                icon: Icon(Icons.badge_outlined), label: 'Accueil'),
+            NavigationDestination(
+                icon: Icon(Icons.groups_outlined), label: 'Famille'),
+            NavigationDestination(
+                icon: Icon(Icons.alternate_email), label: 'Contact'),
           ],
         ),
       );

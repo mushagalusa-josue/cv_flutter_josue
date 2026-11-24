@@ -1,35 +1,42 @@
-# CV Flutter — Josué
+﻿# CV Flutter — Josué
 
-Application Flutter de présentation du CV, de la famille et des coordonnées. L’accès se fait par le bouton « Se connecter », puis une barre de navigation relie Accueil, Famille et Contact.
+Application Flutter de présentation du CV, de la famille et des coordonnées. Le serveur vérifie l’adresse e-mail et le mot de passe avant d’ouvrir le portfolio. La page **Famille** permet de consulter, ajouter, modifier et supprimer des membres dans la base MySQL ou MariaDB de l’API.
 
-## Lancer le projet
+## Démonstration vidéo
 
-Avec Flutter stable installé, ouvrez un terminal dans le dossier `cv_flutter_josue`.
+[Regarder ou télécharger la démonstration WebM](docs/demonstration.webm)
+
+La vidéo montre la création d’un compte, le refus d’un mot de passe incorrect, la connexion, l’ajout et la consultation d’un membre, sa modification, la lecture des données après rechargement, puis la suppression et la déconnexion. Le workflow **Vérifier Flutter et capturer les écrans** peut régénérer la vidéo et les captures avec une base de démonstration vierge.
+
+## Installer l’API
+
+1. Suivez le [README de l’API du cours](https://github.com/espoirbaraka/api-test#installation). Avec XAMPP, placez le dépôt de l’API dans `C:\xampp\htdocs\api-test` et démarrez Apache et MySQL.
+2. Créez la base `api` et importez le fichier `api.sql` fourni avec l’API. Copiez `.env.example` vers `.env` et renseignez la connexion à la base.
+3. Vérifiez que `http://localhost/api-test/public/famille-membres` renvoie une réponse JSON.
+
+## Lancer Flutter
 
 ```sh
-flutter create --platforms=android,ios,web .
 flutter pub get
-flutter analyze
-flutter run
+flutter run -d chrome --dart-define=API_BASE_URL=http://localhost/api-test/public
 ```
 
-Pour une première vérification sur ordinateur, utilisez `flutter run -d chrome`. Pour tester la version mobile, démarrez un émulateur Android ou branchez un téléphone et sélectionnez-le dans `flutter devices`. La compilation iOS s’effectue sur macOS.
+Sur un émulateur Android, utilisez `http://10.0.2.2/api-test/public`. Sur un téléphone, utilisez l’adresse réseau du serveur accessible depuis le téléphone. Conservez le segment `/public`. L’application utilise `http://localhost/api-test/public` par défaut. Pour un serveur distant, configurez une URL HTTPS.
 
-Le bouton **Se connecter** ouvre directement le CV. Le dépôt et ses captures sont publics.
+Sur l’écran de connexion, choisissez **Créer un compte** si nécessaire, puis **Se connecter**. Une base fraîchement importée affiche une liste vide. Dans **Famille**, touchez un membre pour ouvrir sa fiche ou utilisez les boutons de modification et de suppression. Le formulaire envoie les six champs requis et conserve la photo existante lors d’une modification. Les portraits disponibles sur le serveur sont affichés dans la fiche.
 
-## Personnaliser le contenu
+L’API du cours vérifie le mot de passe sur `POST /accounts/login` et renvoie le compte. Le contrôle d’accès au portfolio se fait dans Flutter. Les routes de gestion de l’API fournie restent publiques et utilisent une liste commune à tous les comptes. Hébergez cette instance de démonstration sur un réseau de confiance.
 
-- Vérifiez le CV dans `lib/main.dart` et saisissez vos coordonnées et les membres de votre famille dans `lib/profile.dart`. Les entrées vides de la page Contact restent inactives. Renseignez les liens sociaux en HTTPS.
-- Ajoutez les portraits dans `assets/portraits/`, renseignez leur chemin dans `lib/profile.dart`, puis déclarez le dossier dans `pubspec.yaml`, sous la section `flutter`, au même niveau que `uses-material-design`.
+Le contenu du CV et les coordonnées se personnalisent dans `lib/profile.dart`.
 
-```yaml
-  assets:
-    - assets/portraits/
+## Vérifier le projet
+
+```sh
+flutter analyze
+flutter test
 ```
 
 ## Captures d’écran
-
-Le workflow GitHub Actions **Vérifier Flutter et capturer les écrans** compile l’application et photographie les quatre pages Flutter Web dans une fenêtre de taille mobile. Il ajoute les PNG au dépôt sur la branche `main`. Ces images s’affichent ici après une exécution réussie.
 
 | Connexion | Accueil |
 | --- | --- |
@@ -38,19 +45,3 @@ Le workflow GitHub Actions **Vérifier Flutter et capturer les écrans** compile
 | Famille | Contact |
 | --- | --- |
 | ![Page Famille](docs/screenshots/03-famille.png) | ![Page Contact](docs/screenshots/04-contact.png) |
-
-Si le workflow produit les captures mais que GitHub refuse le commit automatique, téléchargez l’artefact **captures-flutter** depuis l’onglet **Actions**, placez les images dans `docs/screenshots/` et ajoutez-les au dépôt.
-
-## Publier le dépôt
-
-Avec Git et la CLI GitHub installés, exécutez ces commandes à la racine du projet.
-
-```sh
-gh auth login
-git init -b main
-git add .
-git commit -m "Créer le CV Flutter de Josué"
-gh repo create cv_flutter_josue --public --source . --remote origin --push
-```
-
-Le lien du dépôt s’affiche après sa création. Avant de le remettre, vérifiez que les quatre captures apparaissent dans le README sur GitHub.
